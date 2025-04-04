@@ -32,16 +32,17 @@ echo.
 
 rem Verifica se estamos no diretório correto com o Void.exe
 echo [INFO] Verificando executavel do Void...
+echo [DEBUG] Caminho completo procurado: "%APP_DIR%\Void.exe"
+
 if not exist "%APP_DIR%\Void.exe" (
     echo [ERRO] Void.exe nao encontrado em %APP_DIR%
-    echo [ERRO] Este script deve estar na pasta raiz do Void (mesmo nivel que a pasta {code_GetDestDir})
-    echo [DEBUG] Caminho completo procurado: "%APP_DIR%\Void.exe"
+    echo [ERRO] Este script deve estar na pasta raiz do Void (mesmo nivel que a pasta code_getdestdir)
     pause
     exit /b 1
 ) else (
     echo [OK] Void.exe encontrado em %APP_DIR%
+    echo [DEBUG] Prosseguindo com a inicializacao...
 )
-echo.
 
 rem Cria um arquivo para indicar modo portátil
 echo [INFO] Configurando modo portable...
