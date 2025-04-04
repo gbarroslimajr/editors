@@ -152,4 +152,6 @@ start "" "Void.exe" ^
 rem Espera um momento para garantir que o app iniciou
 timeout /t 2 >nul
 
+echo Void iniciado com sucesso em %DATE% às %TIME% >> "%PORTABLE_DIR%\void.log"
+
 exit /b 0
