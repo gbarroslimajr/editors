@@ -1,6 +1,24 @@
 @echo off
 setlocal enabledelayedexpansion
 
+rem ==== Informações do Script ====
+set "SCRIPT_VERSION=1.0.0"
+for /f "tokens=2 delims==." %%I in ('"wmic os get localdatetime /value"') do set "RUNTIME_DATE=%%I"
+set "RUNTIME_DATE=!RUNTIME_DATE:~6,2!/!RUNTIME_DATE:~4,2!/!RUNTIME_DATE:~0,4! !RUNTIME_DATE:~8,2!:!RUNTIME_DATE:~10,2!:!RUNTIME_DATE:~12,2!"
+
+title Void Portable v%SCRIPT_VERSION%
+
+echo ========================================
+echo         VOID PORTABLE LAUNCHER
+echo ----------------------------------------
+echo Versao do Script : v%SCRIPT_VERSION%
+echo Data de Execucao : %RUNTIME_DATE%
+echo ========================================
+echo.
+echo [INFO] Iniciando Void em modo portable...
+echo.
+
+
 rem Define o título da janela
 title Void Portable
 echo [INFO] Iniciando Void em modo portable...
@@ -32,17 +50,18 @@ echo.
 
 rem Verifica se estamos no diretório correto com o Void.exe
 echo [INFO] Verificando executavel do Void...
-echo [DEBUG] Caminho completo procurado: "%APP_DIR%\Void.exe"
+echo [DEBUG] Tentando acessar: "%APP_DIR%\Void.exe"
 
-if not exist "%APP_DIR%\Void.exe" (
-    echo [ERRO] Void.exe nao encontrado em %APP_DIR%
-    echo [ERRO] Este script deve estar na pasta raiz do Void (mesmo nivel que a pasta code_getdestdir)
-    pause
-    exit /b 1
-) else (
+if exist "%APP_DIR%\Void.exe" (
     echo [OK] Void.exe encontrado em %APP_DIR%
     echo [DEBUG] Prosseguindo com a inicializacao...
+) else (
+    echo [ERRO] Void.exe NAO encontrado no caminho informado!
+    echo [ERRO] Verifique se o nome do arquivo esta correto (Void.exe) e se nao ha bloqueios do Windows Defender ou de permissao.
+    pause
+    exit /b 1
 )
+
 
 rem Cria um arquivo para indicar modo portátil
 echo [INFO] Configurando modo portable...
