@@ -50,10 +50,10 @@ echo.
 
 rem Verifica se estamos no diretório correto com o Void.exe
 echo [INFO] Verificando executavel do Void...
-echo [DEBUG] Tentando acessar: "%APP_DIR%\Void.exe"
-
-if exist "%APP_DIR%\Void.exe" (
-    echo [OK] Void.exe encontrado em %APP_DIR%
+set "VOID_EXE_PATH=%APP_DIR%\Void.exe"
+echo [DEBUG] Tentando acessar: "%VOID_EXE_PATH%"
+if exist "%VOID_EXE_PATH%" (
+    echo [OK] Void.exe encontrado em %VOID_EXE_PATH%
     echo [DEBUG] Prosseguindo com a inicializacao...
 ) else (
     echo [ERRO] Void.exe NAO encontrado no caminho informado!
