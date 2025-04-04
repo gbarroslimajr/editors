@@ -1,7 +1,7 @@
 @echo off
 
 rem === CONFIG INICIAL ===
-set "SCRIPT_VERSION=1.0.1"
+set "SCRIPT_VERSION=1.0.2"
 
 for /f "tokens=2 delims==." %%I in ('"wmic os get localdatetime /value"') do set "RUNTIME_DATE=%%I"
 set "RUNTIME_DATE=%RUNTIME_DATE:~6,2%/%RUNTIME_DATE:~4,2%/%RUNTIME_DATE:~0,4% %RUNTIME_DATE:~8,2%:%RUNTIME_DATE:~10,2%:%RUNTIME_DATE:~12,2%"
@@ -53,7 +53,6 @@ if exist "%VOID_EXE%" (
     echo [DEBUG] Prosseguindo com a inicializacao...
 ) else (
     echo [ERRO] Void.exe NAO encontrado no caminho informado!
-    echo [ERRO] Verifique o nome do arquivo e se ha bloqueios de permissao.
     pause
     exit /b 1
 )
@@ -118,12 +117,14 @@ set "VSCODE_NLS_CONFIG={\"locale\":\"pt-br\",\"osLocale\":\"pt-br\",\"availableL
 echo [OK] Variaveis configuradas
 echo.
 
-rem === Criar argv.json e settings.json ===
+rem === Criar argv.json ===
 if not exist "%PORTABLE_DIR%\argv.json" (
     echo { "portable": "%PORTABLE_DIR%" } > "%PORTABLE_DIR%\argv.json"
     echo [OK] argv.json criado
 )
+echo.
 
+rem === Criar settings.json em user-data\User ===
 set "SETTINGS_DIR=%ELECTRON_USER_DATA_DIR%\User"
 set "SETTINGS_FILE=%SETTINGS_DIR%\settings.json"
 
@@ -131,6 +132,7 @@ if not exist "%SETTINGS_DIR%" mkdir "%SETTINGS_DIR%"
 
 if not exist "%SETTINGS_FILE%" (
     echo {> "%SETTINGS_FILE%"
+    echo   "window.zoomLevel": 1.5,>> "%SETTINGS_FILE%"
     echo   "window.titleBarStyle": "custom",>> "%SETTINGS_FILE%"
     echo   "security.workspace.trust.enabled": false,>> "%SETTINGS_FILE%"
     echo   "telemetry.telemetryLevel": "off",>> "%SETTINGS_FILE%"
@@ -141,7 +143,30 @@ if not exist "%SETTINGS_FILE%" (
     echo   "window.restoreWindows": "preserve",>> "%SETTINGS_FILE%"
     echo   "window.newWindowDimensions": "inherit">> "%SETTINGS_FILE%"
     echo }>> "%SETTINGS_FILE%"
-    echo [OK] settings.json criado
+    echo [OK] settings.json criado em user-data
+)
+echo.
+
+rem === Criar settings.json em appdata\Void\User ===
+set "SETTINGS_DIR_ALT=%VSCODE_APPDATA%\Void\User"
+set "SETTINGS_FILE_ALT=%SETTINGS_DIR_ALT%\settings.json"
+
+if not exist "%SETTINGS_DIR_ALT%" mkdir "%SETTINGS_DIR_ALT%"
+
+if not exist "%SETTINGS_FILE_ALT%" (
+    echo {> "%SETTINGS_FILE_ALT%"
+    echo   "window.zoomLevel": 1.5,>> "%SETTINGS_FILE_ALT%"
+    echo   "window.titleBarStyle": "custom",>> "%SETTINGS_FILE_ALT%"
+    echo   "security.workspace.trust.enabled": false,>> "%SETTINGS_FILE_ALT%"
+    echo   "telemetry.telemetryLevel": "off",>> "%SETTINGS_FILE_ALT%"
+    echo   "update.mode": "none",>> "%SETTINGS_FILE_ALT%"
+    echo   "extensions.autoUpdate": false,>> "%SETTINGS_FILE_ALT%"
+    echo   "workbench.enableExperiments": false,>> "%SETTINGS_FILE_ALT%"
+    echo   "files.hotExit": "onExitAndWindowClose",>> "%SETTINGS_FILE_ALT%"
+    echo   "window.restoreWindows": "preserve",>> "%SETTINGS_FILE_ALT%"
+    echo   "window.newWindowDimensions": "inherit">> "%SETTINGS_FILE_ALT%"
+    echo }>> "%SETTINGS_FILE_ALT%"
+    echo [OK] settings.json criado em appdata\Void
 )
 echo.
 
@@ -163,7 +188,9 @@ start "" "Void.exe" ^
     --crash-reporter-directory="%VSCODE_CRASH_REPORTER_DIRECTORY%" ^
     --enable-hardware-acceleration ^
     --high-dpi-support=1 ^
-    --force-device-scale-factor=1
+    --force-device-scale-factor=1.5 ^
+    --enable-pinch ^
+    --force-color-profile=srgb
 
 echo [OK] Void iniciado em %RUNTIME_DATE%
 echo Void iniciado em %RUNTIME_DATE% >> "%PORTABLE_DIR%\void.log"
