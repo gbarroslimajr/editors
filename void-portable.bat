@@ -35,10 +35,11 @@ echo [INFO] Verificando executavel do Void...
 if not exist "%APP_DIR%\Void.exe" (
     echo [ERRO] Void.exe nao encontrado em %APP_DIR%
     echo [ERRO] Este script deve estar na pasta raiz do Void (mesmo nivel que a pasta {code_GetDestDir})
+    echo [DEBUG] Caminho completo procurado: "%APP_DIR%\Void.exe"
     pause
     exit /b 1
 ) else (
-    echo [OK] Void.exe encontrado
+    echo [OK] Void.exe encontrado em %APP_DIR%
 )
 echo.
 
