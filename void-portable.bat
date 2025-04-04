@@ -9,7 +9,7 @@ echo.
 rem Obtém o diretório do script e define o diretório base
 cd /d "%~dp0"
 set "BASE_DIR=%cd%"
-set "APP_DIR=%BASE_DIR%\{code_GetDestDir}"
+set "APP_DIR=%BASE_DIR%\code_GetDestDir"
 set "CERTS_DIR=C:\install\devkit-master\certs"
 echo [INFO] Diretorio base: %BASE_DIR%
 echo [INFO] Diretorio do aplicativo: %APP_DIR%
